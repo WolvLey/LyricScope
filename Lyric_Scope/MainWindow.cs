@@ -16,6 +16,8 @@ namespace LyricScope
 {
     public partial class MainWindow : Form
     {
+
+
         Spotify spotify;
         LyricsProvider lyricsProvider;
         ConfigurationWindow configWindow;
@@ -33,16 +35,6 @@ namespace LyricScope
             configWindow = new ConfigurationWindow();
         }
 
-        // TODO: Change to event?
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            if (MainTextLabel.Text == lyricsProvider.Lyrics)
-                return;
-
-            MainTextLabel.Text = lyricsProvider.Lyrics;
-
-            SpotifyData.Text = $@"{spotify.Interpret} - {spotify.Track} | {spotify.Album}";
-        }
 
         private void Button_Config_Click(object sender, EventArgs e)
         {
@@ -50,6 +42,28 @@ namespace LyricScope
         }
 
         private void LyricsPanel_SizeChanged(object sender, EventArgs e)
+        {
+            CenterLabel();
+        }
+
+        // TODO: Call async
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            Test();
+        }
+
+        private async void Test()
+        {
+            if (MainTextLabel.Text == lyricsProvider.Lyrics)
+                return;
+
+                MainTextLabel.Text = lyricsProvider.Lyrics;
+
+                CenterLabel();
+                SpotifyData.Text = $@"{spotify.Track} - {spotify.Interpret} | {spotify.Album}";
+        }
+
+        private void CenterLabel()
         {
             Size labelSize = MainTextLabel.Size;
             Size panelSize = LyricsPanel.Size;

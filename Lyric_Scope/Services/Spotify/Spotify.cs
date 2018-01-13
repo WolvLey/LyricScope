@@ -31,12 +31,18 @@ namespace LyricScope.Services.Spotify
 
             _spotifyAPI.ListenForEvents = true;
 
-            if (!SpotifyLocalAPI.IsSpotifyRunning()) { return; }
+            //if (!SpotifyLocalAPI.IsSpotifyRunning()) { return; }
+            //if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning()) { return; }
 
-            if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning()) { return; }
+            try
+            {
+                _spotifyAPI.Connect();
+            }
+            catch (Exception e)
+            {
 
-            if (!_spotifyAPI.Connect()) { return; }
-
+                throw e;
+            }
 
             status = _spotifyAPI.GetStatus();
 

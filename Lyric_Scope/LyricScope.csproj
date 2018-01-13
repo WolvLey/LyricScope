@@ -87,7 +87,6 @@
     </Compile>
     <Compile Include="Services\Lyrics\Genius.cs" />
     <Compile Include="Services\Lyrics\ILyricsService.cs" />
-    <Compile Include="Services\Spotify\LocalApi.cs" />
     <Compile Include="Services\Spotify\Spotify.cs" />
   </ItemGroup>
   <ItemGroup>

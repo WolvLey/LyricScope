@@ -14,7 +14,7 @@ using HtmlAgilityPack;
 namespace LyricScope.Services.Lyrics
 {
 
-    public class Genius : ILyricsProvider
+    public class Genius : ILyricsService
     {
         private const string HOST = "https://genius.com";
         private const string PRAFIX = "/api/search/multi?per_page=5&q=";
@@ -68,9 +68,6 @@ namespace LyricScope.Services.Lyrics
 
             string url = getFilteredSongUrl(_compositeUrl);
 
-            if (url==null)
-                return _lyrics;
-
             using (var response = client.GetAsync(url).Result)
             {
                 using (var content = response.Content)
@@ -80,7 +77,22 @@ namespace LyricScope.Services.Lyrics
                     document.LoadHtml(result);
                     var node = document.DocumentNode.SelectSingleNode("//div[contains(@class,'lyrics')]/p");
                     //TODO: Error handling
-                    if (node == null) { return "no text found"; }
+                    if (node == null) {
+
+                        string shortTitle = "";
+
+                        foreach (char c in title)
+                        {
+                            if (c=='-')
+                                return GetLyrics(interpret, shortTitle);
+
+                            shortTitle += c;
+                        }
+
+                        
+
+                        return "no text found";
+                    }
                     _lyrics = HtmlAgilityPack.HtmlEntity.DeEntitize(node.InnerText);
 
                     return _lyrics;

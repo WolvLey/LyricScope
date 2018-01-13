@@ -32,11 +32,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
             this.LyricsPanel = new System.Windows.Forms.Panel();
             this.MainTextLabel = new System.Windows.Forms.Label();
-            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.RootPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Button_Config = new System.Windows.Forms.Button();
             this.SpotifyData = new System.Windows.Forms.Label();
+            this.timer = new System.Windows.Forms.Timer(this.components);
             this.LyricsPanel.SuspendLayout();
             this.RootPanel.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -71,12 +71,6 @@
             this.MainTextLabel.TabIndex = 0;
             this.MainTextLabel.Text = "loading...";
             this.MainTextLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            // 
-            // timer1
-            // 
-            this.timer1.Enabled = true;
-            this.timer1.Interval = 800;
-            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
             // RootPanel
             // 
@@ -119,6 +113,12 @@
             this.SpotifyData.Size = new System.Drawing.Size(0, 13);
             this.SpotifyData.TabIndex = 0;
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 2000;
+            this.timer.Tick += new System.EventHandler(this.Timer_Tick);
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -146,10 +146,10 @@
 
         private System.Windows.Forms.Panel LyricsPanel;
         private System.Windows.Forms.Label MainTextLabel;
-        private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Panel RootPanel;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label SpotifyData;
         private System.Windows.Forms.Button Button_Config;
+        private System.Windows.Forms.Timer timer;
     }
 }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace LyricScope.Services.Lyrics
 
 {
-    public interface ILyricsProvider
+    public interface ILyricsService
     {
         //bool HasAuth { get; }
         //bool IsAuthRquired { get; }
