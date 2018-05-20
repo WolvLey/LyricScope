@@ -49,18 +49,18 @@ namespace LyricScope
         // TODO: Call async
         private void Timer_Tick(object sender, EventArgs e)
         {
-            Test();
+            InvokeLyricSearch();
         }
 
-        private async void Test()
+        private void InvokeLyricSearch()
         {
-            if (MainTextLabel.Text == lyricsProvider.Lyrics)
+            if (MainTextLabel.Text == lyricsProvider.GetLyrics())
                 return;
 
-                MainTextLabel.Text = lyricsProvider.Lyrics;
+            MainTextLabel.Text = lyricsProvider.GetLyrics();
 
-                CenterLabel();
-                SpotifyData.Text = $@"{spotify.Track} - {spotify.Interpret} | {spotify.Album}";
+            CenterLabel();
+            CurrentSongData.Text = $@"{spotify.Track} - {spotify.Interpret} | {spotify.Album}";
         }
 
         private void CenterLabel()
@@ -69,6 +69,15 @@ namespace LyricScope
             Size panelSize = LyricsPanel.Size;
 
             MainTextLabel.Location = new Point((panelSize.Width / 2) - (labelSize.Width / 2), 0);
+        }
+
+        private void SearchField_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)13)
+            {
+                MainTextLabel.Text = lyricsProvider.GetLyrics(SearchField.Text);
+                CenterLabel();
+            }
         }
     }
 }

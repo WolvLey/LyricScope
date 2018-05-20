@@ -34,8 +34,9 @@
             this.MainTextLabel = new System.Windows.Forms.Label();
             this.RootPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.SearchField = new System.Windows.Forms.TextBox();
             this.Button_Config = new System.Windows.Forms.Button();
-            this.SpotifyData = new System.Windows.Forms.Label();
+            this.CurrentSongData = new System.Windows.Forms.Label();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.LyricsPanel.SuspendLayout();
             this.RootPanel.SuspendLayout();
@@ -86,13 +87,22 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.SearchField);
             this.panel1.Controls.Add(this.Button_Config);
-            this.panel1.Controls.Add(this.SpotifyData);
+            this.panel1.Controls.Add(this.CurrentSongData);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(488, 27);
             this.panel1.TabIndex = 1;
+            // 
+            // SearchField
+            // 
+            this.SearchField.Location = new System.Drawing.Point(307, 4);
+            this.SearchField.Name = "SearchField";
+            this.SearchField.Size = new System.Drawing.Size(100, 20);
+            this.SearchField.TabIndex = 2;
+            this.SearchField.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.SearchField_KeyPress);
             // 
             // Button_Config
             // 
@@ -105,13 +115,13 @@
             this.Button_Config.UseVisualStyleBackColor = true;
             this.Button_Config.Click += new System.EventHandler(this.Button_Config_Click);
             // 
-            // SpotifyData
+            // CurrentSongData
             // 
-            this.SpotifyData.AutoSize = true;
-            this.SpotifyData.Location = new System.Drawing.Point(13, 4);
-            this.SpotifyData.Name = "SpotifyData";
-            this.SpotifyData.Size = new System.Drawing.Size(0, 13);
-            this.SpotifyData.TabIndex = 0;
+            this.CurrentSongData.AutoSize = true;
+            this.CurrentSongData.Location = new System.Drawing.Point(13, 4);
+            this.CurrentSongData.Name = "CurrentSongData";
+            this.CurrentSongData.Size = new System.Drawing.Size(0, 13);
+            this.CurrentSongData.TabIndex = 0;
             // 
             // timer
             // 
@@ -148,8 +158,9 @@
         private System.Windows.Forms.Label MainTextLabel;
         private System.Windows.Forms.Panel RootPanel;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label SpotifyData;
+        private System.Windows.Forms.Label CurrentSongData;
         private System.Windows.Forms.Button Button_Config;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.TextBox SearchField;
     }
 }

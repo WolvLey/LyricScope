@@ -32,7 +32,7 @@ namespace LyricScope.Services.Lyrics
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        private string getFilteredSongUrl(string url)
+        private string GetFilteredSongUrl(string url)
         {
             // TODO: Change to not only "First Hit".
             using (var response = client.GetAsync(url).Result)
@@ -66,7 +66,7 @@ namespace LyricScope.Services.Lyrics
 
             _compositeUrl = $@"{PRAFIX}%20{interpret}%20{title}%20{album}";
 
-            string url = getFilteredSongUrl(_compositeUrl);
+            string url = GetFilteredSongUrl(_compositeUrl);
 
             using (var response = client.GetAsync(url).Result)
             {

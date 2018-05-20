@@ -11,7 +11,8 @@ using LyricScope.Services.Lyrics;
 
 
 namespace LyricScope.Services.Spotify
-{
+{  
+
     public class Spotify
     {
         private SpotifyLocalAPI _spotifyAPI;
@@ -40,8 +41,7 @@ namespace LyricScope.Services.Spotify
             }
             catch (Exception e)
             {
-
-                throw e;
+                Console.WriteLine(e);
             }
 
             status = _spotifyAPI.GetStatus();
@@ -62,5 +62,6 @@ namespace LyricScope.Services.Spotify
                 _track = e.NewTrack.TrackResource.Name;
             }
         }
+
     }
 }

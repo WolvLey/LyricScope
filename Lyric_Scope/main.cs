@@ -6,6 +6,7 @@ namespace LyricScope
     class main
     {
       
+        [STAThread]
         public static void Main(String[] args)
         {
             Application.SetCompatibleTextRenderingDefault(false);
