@@ -16,8 +16,6 @@ namespace LyricScope
 {
     public partial class MainWindow : Form
     {
-
-
         Spotify spotify;
         LyricsProvider lyricsProvider;
         ConfigurationWindow configWindow;
@@ -33,8 +31,16 @@ namespace LyricScope
             spotify = new Spotify();
             lyricsProvider = new LyricsProvider();
             configWindow = new ConfigurationWindow();
-        }
 
+            if (!spotify.Playing)
+            {
+                Play_PauseButton.Text = "Pause";
+            }
+            else
+            {
+                Play_PauseButton.Text = "Play";
+            }
+        }
 
         private void Button_Config_Click(object sender, EventArgs e)
         {
@@ -60,7 +66,8 @@ namespace LyricScope
             MainTextLabel.Text = lyricsProvider.GetLyrics();
 
             CenterLabel();
-            CurrentSongData.Text = $@"{spotify.Track} - {spotify.Interpret} | {spotify.Album}";
+            CurrentSongTrackName.Text = spotify.Track;
+            CurrentSongAdditonalData.Text = $@"{spotify.Interpret} | {spotify.Album}";
         }
 
         private void CenterLabel()
@@ -78,6 +85,21 @@ namespace LyricScope
                 MainTextLabel.Text = lyricsProvider.GetLyrics(SearchField.Text);
                 CenterLabel();
             }
+        }
+
+        private void Play_Pause(object sender, EventArgs e)
+        {
+            Play_PauseButton.Text = spotify.Play_Pause();
+        }
+
+        private void PreviousBtn_Click(object sender, EventArgs e)
+        {
+            spotify.Previous();
+        }
+
+        private void NextBtn_Click(object sender, EventArgs e)
+        {
+            spotify.Skip();
         }
     }
 }

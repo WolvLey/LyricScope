@@ -11,12 +11,11 @@ using LyricScope.Services.Lyrics;
 
 
 namespace LyricScope.Services.Spotify
-{  
+{
 
     public class Spotify
     {
         private SpotifyLocalAPI _spotifyAPI;
-        private static StatusResponse status;
 
         private string _interpret;
         private string _album;
@@ -25,6 +24,7 @@ namespace LyricScope.Services.Spotify
         public string Interpret => _interpret;
         public string Album => _album;
         public string Track => _track;
+        public bool Playing => _spotifyAPI.GetStatus().Playing;
 
         public Spotify()
         {
@@ -44,13 +44,39 @@ namespace LyricScope.Services.Spotify
                 Console.WriteLine(e);
             }
 
-            status = _spotifyAPI.GetStatus();
+            var status = _spotifyAPI.GetStatus();
 
             _interpret = status.Track.ArtistResource?.Name ?? "";
             _album = status.Track.AlbumResource?.Name ?? "";
             _track = status.Track.TrackResource?.Name ?? "";
 
             _spotifyAPI.OnTrackChange += _spotify_OnTrackChange;
+        }
+
+        public string Play_Pause()
+        {
+            var playing = _spotifyAPI.GetStatus().Playing;
+            
+            if (!playing)
+            {
+                _spotifyAPI.Play();
+                return "Pause";
+            }
+            else
+            {
+                _spotifyAPI.Pause();
+                return "Play";
+            }
+        }
+
+        public void Skip()
+        {
+            _spotifyAPI.Skip();
+        }
+
+        public void Previous()
+        {
+            _spotifyAPI.Previous();
         }
 
         private void _spotify_OnTrackChange(object sender, TrackChangeEventArgs e)
