@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Newtonsoft.Json;
 using LyricScope.Services.Spotify;
 using System.Net.Http;
@@ -13,7 +12,6 @@ using HtmlAgilityPack;
 
 namespace LyricScope.Services.Lyrics
 {
-
     public class Genius : ILyricsService
     {
         private const string HOST = "https://genius.com";
@@ -53,6 +51,7 @@ namespace LyricScope.Services.Lyrics
                             }
                         }
                     }
+
                     return "";
                 }
             }
@@ -60,6 +59,11 @@ namespace LyricScope.Services.Lyrics
 
         public string GetLyrics(string interpret, string title, string album = "")
         {
+            if (interpret == null || title == null)
+            {
+                return "loading";
+            }
+
             interpret = System.Net.WebUtility.UrlEncode(interpret);
             title = System.Net.WebUtility.UrlEncode(title);
             //album = System.Net.WebUtility.UrlEncode(album);
@@ -77,22 +81,22 @@ namespace LyricScope.Services.Lyrics
                     document.LoadHtml(result);
                     var node = document.DocumentNode.SelectSingleNode("//div[contains(@class,'lyrics')]/p");
                     //TODO: Error handling
-                    if (node == null) {
-
+                    if (node == null)
+                    {
                         string shortTitle = "";
 
                         foreach (char c in title)
                         {
-                            if (c=='-')
+                            if (c == '-')
                                 return GetLyrics(interpret, shortTitle);
 
                             shortTitle += c;
                         }
 
-                        
 
                         return "no text found";
                     }
+
                     _lyrics = HtmlAgilityPack.HtmlEntity.DeEntitize(node.InnerText);
 
                     return _lyrics;

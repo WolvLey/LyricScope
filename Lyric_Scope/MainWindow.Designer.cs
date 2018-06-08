@@ -37,12 +37,12 @@
             this.MainTextLabel = new System.Windows.Forms.Label();
             this.RootPanel = new System.Windows.Forms.Panel();
             this.SidePanel = new System.Windows.Forms.Panel();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.NextBtn = new System.Windows.Forms.Button();
+            this.PreviousBtn = new System.Windows.Forms.Button();
             this.Play_PauseButton = new System.Windows.Forms.Button();
             this.SearchField = new System.Windows.Forms.TextBox();
             this.timer = new System.Windows.Forms.Timer(this.components);
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.PreviousBtn = new System.Windows.Forms.Button();
-            this.NextBtn = new System.Windows.Forms.Button();
             this.LyricsPanel.SuspendLayout();
             this.CurrentSongDataPanel.SuspendLayout();
             this.RootPanel.SuspendLayout();
@@ -137,6 +137,39 @@
             this.SidePanel.Size = new System.Drawing.Size(121, 1066);
             this.SidePanel.TabIndex = 1;
             // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.NextBtn);
+            this.groupBox1.Controls.Add(this.PreviousBtn);
+            this.groupBox1.Controls.Add(this.Play_PauseButton);
+            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.groupBox1.Location = new System.Drawing.Point(0, 1005);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(121, 61);
+            this.groupBox1.TabIndex = 3;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox1";
+            // 
+            // NextBtn
+            // 
+            this.NextBtn.Location = new System.Drawing.Point(96, 30);
+            this.NextBtn.Name = "NextBtn";
+            this.NextBtn.Size = new System.Drawing.Size(19, 23);
+            this.NextBtn.TabIndex = 6;
+            this.NextBtn.Text = "N";
+            this.NextBtn.UseVisualStyleBackColor = true;
+            this.NextBtn.Click += new System.EventHandler(this.NextBtn_Click);
+            // 
+            // PreviousBtn
+            // 
+            this.PreviousBtn.Location = new System.Drawing.Point(6, 30);
+            this.PreviousBtn.Name = "PreviousBtn";
+            this.PreviousBtn.Size = new System.Drawing.Size(21, 23);
+            this.PreviousBtn.TabIndex = 5;
+            this.PreviousBtn.Text = "P";
+            this.PreviousBtn.UseVisualStyleBackColor = true;
+            this.PreviousBtn.Click += new System.EventHandler(this.PreviousBtn_Click);
+            // 
             // Play_PauseButton
             // 
             this.Play_PauseButton.Location = new System.Drawing.Point(33, 30);
@@ -161,39 +194,6 @@
             this.timer.Enabled = true;
             this.timer.Interval = 2000;
             this.timer.Tick += new System.EventHandler(this.Timer_Tick);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.NextBtn);
-            this.groupBox1.Controls.Add(this.PreviousBtn);
-            this.groupBox1.Controls.Add(this.Play_PauseButton);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 1005);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(121, 61);
-            this.groupBox1.TabIndex = 3;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "groupBox1";
-            // 
-            // PreviousBtn
-            // 
-            this.PreviousBtn.Location = new System.Drawing.Point(6, 30);
-            this.PreviousBtn.Name = "PreviousBtn";
-            this.PreviousBtn.Size = new System.Drawing.Size(21, 23);
-            this.PreviousBtn.TabIndex = 5;
-            this.PreviousBtn.Text = "P";
-            this.PreviousBtn.UseVisualStyleBackColor = true;
-            this.PreviousBtn.Click += new System.EventHandler(this.PreviousBtn_Click);
-            // 
-            // NextBtn
-            // 
-            this.NextBtn.Location = new System.Drawing.Point(96, 30);
-            this.NextBtn.Name = "NextBtn";
-            this.NextBtn.Size = new System.Drawing.Size(19, 23);
-            this.NextBtn.TabIndex = 6;
-            this.NextBtn.Text = "N";
-            this.NextBtn.UseVisualStyleBackColor = true;
-            this.NextBtn.Click += new System.EventHandler(this.NextBtn_Click);
             // 
             // MainWindow
             // 

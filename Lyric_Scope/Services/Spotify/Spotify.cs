@@ -5,17 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using SpotifyAPI.Local;
 using SpotifyAPI.Local.Models;
-
 using LyricScope.Services.Lyrics;
-
 
 
 namespace LyricScope.Services.Spotify
 {
-
     public class Spotify
     {
-        private SpotifyLocalAPI _spotifyAPI;
+        private readonly SpotifyLocalAPI _spotifyAPI;
 
         private string _interpret;
         private string _album;
@@ -28,35 +25,34 @@ namespace LyricScope.Services.Spotify
 
         public Spotify()
         {
-            _spotifyAPI = new SpotifyLocalAPI(new SpotifyLocalAPIConfig());
-
-            _spotifyAPI.ListenForEvents = true;
-
-            //if (!SpotifyLocalAPI.IsSpotifyRunning()) { return; }
-            //if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning()) { return; }
-
-            try
-            {
-                _spotifyAPI.Connect();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-
-            var status = _spotifyAPI.GetStatus();
-
-            _interpret = status.Track.ArtistResource?.Name ?? "";
-            _album = status.Track.AlbumResource?.Name ?? "";
-            _track = status.Track.TrackResource?.Name ?? "";
+            _spotifyAPI = new SpotifyLocalAPI(new SpotifyLocalAPIConfig()) {ListenForEvents = true};
 
             _spotifyAPI.OnTrackChange += _spotify_OnTrackChange;
+            //if (!SpotifyLocalAPI.IsSpotifyRunning()) { return; }
+            //if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning()) { return; }
+        }
+
+        public bool Connect()
+        {
+            var isConnected = _spotifyAPI.Connect();
+
+            if (isConnected)
+            {
+                var status = _spotifyAPI.GetStatus();
+
+                _interpret = status.Track.ArtistResource?.Name ?? "";
+                _album = status.Track.AlbumResource?.Name ?? "";
+                _track = status.Track.TrackResource?.Name ?? "";
+
+            }
+
+            return isConnected;
         }
 
         public string Play_Pause()
         {
             var playing = _spotifyAPI.GetStatus().Playing;
-            
+
             if (!playing)
             {
                 _spotifyAPI.Play();
@@ -88,6 +84,5 @@ namespace LyricScope.Services.Spotify
                 _track = e.NewTrack.TrackResource.Name;
             }
         }
-
     }
 }

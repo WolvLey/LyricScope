@@ -4,27 +4,28 @@ using LyricScope.Services.Lyrics;
 
 namespace LyricScope
 {
-    class LyricsProvider
+    internal class LyricsProvider
     {
-        private Spotify _spotify = new Spotify();
-        private Genius _genius = new Genius();
+        private readonly Spotify _spotify = new Spotify();
+        private readonly Genius _genius = new Genius();
 
-        public string GetLyrics()
+        public string GetLyrics(Spotify spotify)
         {
             return _genius.GetLyrics
-                (
-                    _spotify.Interpret,
-                    _spotify.Track
+            (
+                spotify.Interpret,
+                spotify.Track
                 //_spotify.Album
-                );
+            );
         }
 
-        public string GetLyrics(string interpret="", string track ="")
+        public string GetLyrics(string interpret = "", string track = "")
         {
+            if (interpret == null) throw new ArgumentNullException(nameof(interpret));
             return _genius.GetLyrics(
-                    interpret,
-                    track
-                );
+                interpret,
+                track
+            );
         }
     }
 }

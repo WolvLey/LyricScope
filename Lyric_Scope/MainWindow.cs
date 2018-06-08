@@ -6,19 +6,17 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
-
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using LyricScope.Services.Spotify;
 
 namespace LyricScope
 {
     public partial class MainWindow : Form
     {
-        Spotify spotify;
-        LyricsProvider lyricsProvider;
-        ConfigurationWindow configWindow;
+        private Spotify spotify;
+        private LyricsProvider lyricsProvider;
+        private ConfigurationWindow configWindow;
 
         public MainWindow()
         {
@@ -28,18 +26,10 @@ namespace LyricScope
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
-            spotify = new Spotify();
             lyricsProvider = new LyricsProvider();
             configWindow = new ConfigurationWindow();
 
-            if (!spotify.Playing)
-            {
-                Play_PauseButton.Text = "Pause";
-            }
-            else
-            {
-                Play_PauseButton.Text = "Play";
-            }
+            Play_PauseButton.Text = !spotify.Playing ? "Pause" : "Play";
         }
 
         private void Button_Config_Click(object sender, EventArgs e)
@@ -55,32 +45,46 @@ namespace LyricScope
         // TODO: Call async
         private void Timer_Tick(object sender, EventArgs e)
         {
-            InvokeLyricSearch();
+            if (spotify.Connect()) InvokeLyricSearch();
+
+            //HandleScroll();
         }
 
         private void InvokeLyricSearch()
         {
-            if (MainTextLabel.Text == lyricsProvider.GetLyrics())
+            if (MainTextLabel.Text == lyricsProvider.GetLyrics(spotify))
                 return;
 
-            MainTextLabel.Text = lyricsProvider.GetLyrics();
+            MainTextLabel.Text = lyricsProvider.GetLyrics(spotify);
 
             CenterLabel();
+
             CurrentSongTrackName.Text = spotify.Track;
             CurrentSongAdditonalData.Text = $@"{spotify.Interpret} | {spotify.Album}";
         }
 
         private void CenterLabel()
         {
-            Size labelSize = MainTextLabel.Size;
-            Size panelSize = LyricsPanel.Size;
+            var labelSize = MainTextLabel.Size;
+            var panelSize = LyricsPanel.Size;
 
-            MainTextLabel.Location = new Point((panelSize.Width / 2) - (labelSize.Width / 2), 0);
+            MainTextLabel.Location = new Point(panelSize.Width / 2 - labelSize.Width / 2, 0);
         }
+
+//        private void HandleScroll()
+//        {
+//            for (var i = 0; i < 100; i++)
+//            {
+//                if (LyricsPanel.VerticalScroll.Value ==95) return;
+//                LyricsPanel.VerticalScroll.Value += i;
+//
+//                Thread.Sleep(1000);
+//            }
+//        }
 
         private void SearchField_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char)13)
+            if (e.KeyChar == (char) 13)
             {
                 MainTextLabel.Text = lyricsProvider.GetLyrics(SearchField.Text);
                 CenterLabel();
