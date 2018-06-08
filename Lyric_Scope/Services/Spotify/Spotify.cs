@@ -32,9 +32,9 @@ namespace LyricScope.Services.Spotify
             //if (!SpotifyLocalAPI.IsSpotifyWebHelperRunning()) { return; }
         }
 
-        public bool Connect()
+        public async Task<bool> Connect()
         {
-            var isConnected = _spotifyAPI.Connect();
+            var isConnected = await Task.Run(()=> _spotifyAPI.Connect()); 
 
             if (isConnected)
             {
@@ -48,10 +48,10 @@ namespace LyricScope.Services.Spotify
             return isConnected;
         }
 
-        public SpotifyLocalAPI GetSpotifyAPIRef()
-        {
-            return _spotifyAPI;
-        }
+        //public SpotifyLocalAPI GetSpotifyAPIRef()
+        //{
+        //    return _spotifyAPI;
+        //}
 
         public string Play_Pause()
         {

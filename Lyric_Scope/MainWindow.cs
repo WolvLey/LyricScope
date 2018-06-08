@@ -20,7 +20,7 @@ namespace LyricScope
             spotify = new Spotify();
         }
 
-        private void MainWindow_Load(object sender, EventArgs e)
+        private async void MainWindow_Load(object sender, EventArgs e)
         {
             //spotify.GetSpotifyAPIRef().OnTrackChange += Spotify_OnTrackChange;
 
@@ -29,7 +29,7 @@ namespace LyricScope
 
             Play_PauseButton.Text = !spotify.Playing ? "Pause" : "Play";
 
-            if (spotify.Connect()) InvokeLyricSearch();
+            if (await spotify.Connect()) await InvokeLyricSearch();
         }
 
         private void Button_Config_Click(object sender, EventArgs e)
@@ -49,7 +49,7 @@ namespace LyricScope
 
         private async void Timer_Tick(object sender, EventArgs e)
         {
-            if (spotify.Connect()) await InvokeLyricSearch();
+            if (await spotify.Connect()) await InvokeLyricSearch();
 
             //HandleScroll();
         }
