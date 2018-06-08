@@ -2,9 +2,9 @@
 using LyricScope.Services.Spotify;
 using LyricScope.Services.Lyrics;
 
-namespace LyricScope
+namespace LyricScope.Provider
 {
-    internal class LyricsProvider
+    public class LyricsProvider
     {
         private readonly Spotify _spotify = new Spotify();
         private readonly Genius _genius = new Genius();

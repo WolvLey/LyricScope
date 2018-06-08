@@ -43,10 +43,14 @@ namespace LyricScope.Services.Spotify
                 _interpret = status.Track.ArtistResource?.Name ?? "";
                 _album = status.Track.AlbumResource?.Name ?? "";
                 _track = status.Track.TrackResource?.Name ?? "";
-
             }
 
             return isConnected;
+        }
+
+        public SpotifyLocalAPI GetSpotifyAPIRef()
+        {
+            return _spotifyAPI;
         }
 
         public string Play_Pause()

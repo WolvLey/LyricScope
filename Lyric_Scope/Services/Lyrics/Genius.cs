@@ -68,7 +68,7 @@ namespace LyricScope.Services.Lyrics
             title = System.Net.WebUtility.UrlEncode(title);
             //album = System.Net.WebUtility.UrlEncode(album);
 
-            _compositeUrl = $@"{PRAFIX}%20{interpret}%20{title}%20{album}";
+            _compositeUrl = $"{PRAFIX}%20{interpret}%20{title}%20{album}";
 
             string url = GetFilteredSongUrl(_compositeUrl);
 

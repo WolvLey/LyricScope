@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LyricScope.Services.Lyrics
+﻿namespace LyricScope.Services.Lyrics
 
 {
     public interface ILyricsService
@@ -13,7 +7,6 @@ namespace LyricScope.Services.Lyrics
         //bool IsAuthRquired { get; }
         //bool SupportsSynscronize { get; }
         //Task<bool> Connect();
-
         string GetLyrics(string interpret, string track, string album = "");
     }
 }

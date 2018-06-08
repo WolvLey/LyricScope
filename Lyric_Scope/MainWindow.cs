@@ -1,22 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using LyricScope.Provider;
 using LyricScope.Services.Spotify;
+using SpotifyAPI.Local;
 
 namespace LyricScope
 {
     public partial class MainWindow : Form
     {
-        private Spotify spotify;
-        private LyricsProvider lyricsProvider;
+        private readonly Spotify spotify;
         private ConfigurationWindow configWindow;
+        private LyricsProvider lyricsProvider;
 
         public MainWindow()
         {
@@ -26,10 +22,14 @@ namespace LyricScope
 
         private void MainWindow_Load(object sender, EventArgs e)
         {
+            //spotify.GetSpotifyAPIRef().OnTrackChange += Spotify_OnTrackChange;
+
             lyricsProvider = new LyricsProvider();
             configWindow = new ConfigurationWindow();
 
             Play_PauseButton.Text = !spotify.Playing ? "Pause" : "Play";
+
+            if (spotify.Connect()) InvokeLyricSearch();
         }
 
         private void Button_Config_Click(object sender, EventArgs e)
@@ -42,20 +42,26 @@ namespace LyricScope
             CenterLabel();
         }
 
-        // TODO: Call async
-        private void Timer_Tick(object sender, EventArgs e)
+        //private void Spotify_OnTrackChange(object sender, TrackChangeEventArgs e)
+        //{
+        //    if (spotify.Connect()) InvokeLyricSearch();
+        //}
+
+        private async void Timer_Tick(object sender, EventArgs e)
         {
-            if (spotify.Connect()) InvokeLyricSearch();
+            if (spotify.Connect()) await InvokeLyricSearch();
 
             //HandleScroll();
         }
 
-        private void InvokeLyricSearch()
+        private async Task InvokeLyricSearch()
         {
-            if (MainTextLabel.Text == lyricsProvider.GetLyrics(spotify))
+            var lyrics= await Task.Run(()=> lyricsProvider.GetLyrics(spotify));
+
+            if (MainTextLabel.Text == lyrics)
                 return;
 
-            MainTextLabel.Text = lyricsProvider.GetLyrics(spotify);
+            MainTextLabel.Text = lyrics;
 
             CenterLabel();
 
