@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using LyricScope.Services.Lyrics;
 
 namespace LyricScope.Provider
 {
-    interface ProviderVisitor
+    public interface ILyricsVisitor
     {
+        string VisitGenius(Genius genius);
     }
 }

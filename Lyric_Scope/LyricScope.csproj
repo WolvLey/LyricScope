@@ -114,8 +114,10 @@
     <Compile Include="MainWindow.Designer.cs">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Provider\ProviderVisitor.cs" />
+    <Compile Include="Provider\ILyricsVisitor.cs" />
+    <Compile Include="Provider\LyricsVisitor.cs" />
     <Compile Include="Services\Lyrics\Genius.cs" />
+    <Compile Include="Services\Lyrics\IVisitable.cs" />
     <Compile Include="Services\Lyrics\ILyricsService.cs" />
     <Compile Include="Services\Spotify\Spotify.cs" />
   </ItemGroup>

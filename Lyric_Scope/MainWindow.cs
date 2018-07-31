@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using LyricScope.Provider;
 using LyricScope.Services.Spotify;
-using SpotifyAPI.Local;
 
 namespace LyricScope
 {
@@ -13,23 +12,27 @@ namespace LyricScope
         private readonly Spotify spotify;
         private ConfigurationWindow configWindow;
         private LyricsProvider lyricsProvider;
+        private LyricsVisitor lyricsVisitor;
 
         public MainWindow()
         {
             InitializeComponent();
             spotify = new Spotify();
+            
+            lyricsVisitor = new LyricsVisitor(spotify);
         }
 
         private async void MainWindow_Load(object sender, EventArgs e)
         {
             //spotify.GetSpotifyAPIRef().OnTrackChange += Spotify_OnTrackChange;
-
             lyricsProvider = new LyricsProvider();
             configWindow = new ConfigurationWindow();
 
-            Play_PauseButton.Text = !spotify.Playing ? "Pause" : "Play";
-
-            if (await spotify.Connect()) await InvokeLyricSearch();
+            if (await spotify.Connect())
+            {
+                await InvokeLyricSearch();
+                Play_PauseButton.Text = !spotify.Playing ? "Pause" : "Play";
+            }
         }
 
         private void Button_Config_Click(object sender, EventArgs e)
@@ -56,7 +59,9 @@ namespace LyricScope
 
         private async Task InvokeLyricSearch()
         {
-            var lyrics= await Task.Run(()=> lyricsProvider.GetLyrics(spotify));
+            if (CurrentSongTrackName.Text == spotify.Track && $@"{spotify.Interpret} | {spotify.Album}" == CurrentSongAdditonalData.Text) return;
+
+            var lyrics= await Task.Run(()=> lyricsVisitor.VisitGenius(lyricsProvider.Genius));
 
             if (MainTextLabel.Text == lyrics)
                 return;
@@ -90,11 +95,11 @@ namespace LyricScope
 
         private void SearchField_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (e.KeyChar == (char) 13)
-            {
-                MainTextLabel.Text = lyricsProvider.GetLyrics(SearchField.Text);
-                CenterLabel();
-            }
+            //if (e.KeyChar == (char) 13)
+            //{
+            //    MainTextLabel.Text = lyricsProvider.GetLyrics(SearchField.Text);
+            //    CenterLabel();
+            //}
         }
 
         private void Play_Pause(object sender, EventArgs e)

@@ -7,15 +7,17 @@ using Newtonsoft.Json;
 using LyricScope.Services.Spotify;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading;
 using HtmlAgilityPack;
+using LyricScope.Provider;
 
 
 namespace LyricScope.Services.Lyrics
 {
-    public class Genius : ILyricsService
+    public class Genius : ILyricsService, IVisitable
     {
         private const string HOST = "https://genius.com";
-        private const string PRAFIX = "/api/search/multi?per_page=5&q=";
+        private const string POSTFIX = "/api/search/multi?per_page=5&q=";
 
         private string _compositeUrl;
 
@@ -33,27 +35,34 @@ namespace LyricScope.Services.Lyrics
         private string GetFilteredSongUrl(string url)
         {
             // TODO: Change to not only "First Hit".
-            using (var response = client.GetAsync(url).Result)
+            try
             {
-                using (var content = response.Content)
+                using (var response = client.GetAsync(url).Result)
                 {
-                    string responseString = content.ReadAsStringAsync().Result;
-
-                    var json = JsonConvert.DeserializeObject<dynamic>(responseString);
-
-                    foreach (var section in json.response.sections)
+                    using (var content = response.Content)
                     {
-                        if (section.type == "song")
+                        string responseString = content.ReadAsStringAsync().Result;
+
+                        var json = JsonConvert.DeserializeObject<dynamic>(responseString);
+
+                        foreach (var section in json.response.sections)
                         {
+                            if (section.type != "song") continue;
                             foreach (var hit in section.hits)
                             {
                                 return hit.result.url;
                             }
                         }
-                    }
 
-                    return "";
+                        return "";
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Thread.Sleep(1000);
+                return GetFilteredSongUrl(url);
             }
         }
 
@@ -68,40 +77,54 @@ namespace LyricScope.Services.Lyrics
             title = System.Net.WebUtility.UrlEncode(title);
             //album = System.Net.WebUtility.UrlEncode(album);
 
-            _compositeUrl = $"{PRAFIX}%20{interpret}%20{title}%20{album}";
+            _compositeUrl = $"{POSTFIX}%20{interpret}%20{title}%20{album}";
 
             string url = GetFilteredSongUrl(_compositeUrl);
 
-            using (var response = client.GetAsync(url).Result)
+            try
             {
-                using (var content = response.Content)
+                using (var response = client.GetAsync(url).Result)
                 {
-                    var result = content.ReadAsStringAsync().Result;
-                    var document = new HtmlDocument();
-                    document.LoadHtml(result);
-                    var node = document.DocumentNode.SelectSingleNode("//div[contains(@class,'lyrics')]/p");
-                    //TODO: Error handling
-                    if (node == null)
+                    using (var content = response.Content)
                     {
-                        string shortTitle = "";
-
-                        foreach (char c in title)
+                        var result = content.ReadAsStringAsync().Result;
+                        var document = new HtmlDocument();
+                        document.LoadHtml(result);
+                        var node = document.DocumentNode.SelectSingleNode("//div[contains(@class,'lyrics')]/p");
+                        //TODO: Error handling
+                        if (node == null)
                         {
-                            if (c == '-')
-                                return GetLyrics(interpret, shortTitle);
+                            string shortTitle = "";
 
-                            shortTitle += c;
+                            foreach (char c in title)
+                            {
+                                if (c == '-')
+                                    return GetLyrics(interpret, shortTitle);
+
+                                shortTitle += c;
+                            }
+
+
+                            return "no text found";
                         }
 
+                        _lyrics = HtmlAgilityPack.HtmlEntity.DeEntitize(node.InnerText);
 
-                        return "no text found";
+                        return _lyrics;
                     }
-
-                    _lyrics = HtmlAgilityPack.HtmlEntity.DeEntitize(node.InnerText);
-
-                    return _lyrics;
                 }
             }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                Thread.Sleep(1000);
+                return GetLyrics(interpret, title, album);
+            }
+        }
+
+        public string AcceptVisitor(ILyricsVisitor visitor)
+        {
+            return visitor.VisitGenius(this);
         }
     }
 }

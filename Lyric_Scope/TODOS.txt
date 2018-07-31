@@ -2,7 +2,5 @@
 - mehrere provider (eventuell meta provider)
 - eventl Lyrics text in lyric lines ändern
 - suchfunktion fr lieder außerhalb von spotify-client
-- suche abändern, sodass nach fehlversuch jeweils ein wort weggenommen wird
-- skip button?
 - cover anzeigen?
 - lokalen Dateien?
